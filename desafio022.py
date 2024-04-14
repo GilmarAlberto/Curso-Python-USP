@@ -43,41 +43,71 @@ Dado que é possível jogar partidas individuais ou campeonatos, seu programa de
 
 Atenção: o corretor automático vai verificar se você está utilizando exatamente as mensagens pedidas, como "Você começa!", "O computador ganhou!" etc. Deixe para usar a sua criatividade em outros lugares!
 '''
-
 def computador_escolhe_jogada(n, m):
-    pass
+    if n <= m:
+        return n
+    else:
+        return m
 
 def usuario_escolhe_jogada(n, m):
-    pass
-    
-def partida():
+    jogada = int(input("Quantas peças você vai tirar? "))
+    while jogada < 1 or jogada > m or jogada > n:
+        print("Oops! Jogada inválida! Tente novamente.")
+        jogada = int(input("Quantas peças você vai tirar? "))
+    return jogada
 
+def partida():
     n = int(input("Quantas peças? "))
     m = int(input("Limite de peças por jogada? "))
 
     if n % (m + 1) == 0:
         print("Você começa!")
+        jogador = 1
     else:
-        print("Computador começa!") 
-           
-def main():
+        print("Computador começa!")
+        jogador = 0
 
-    print("Bem-vindo ao jogo do NIM!")
-    print("Escolha: ")
-    print("1 - para jogar uma partida isolada")
-    print("2 - para jogar um campeonato")
+    while n > 0:
+        if jogador == 0:
+            jogada = computador_escolhe_jogada(n, m)
+            print("O computador tirou", jogada, "peça(s).")
+            n -= jogada
+            jogador = 1
+        else:
+            jogada = usuario_escolhe_jogada(n, m)
+            print("Você tirou", jogada, "peça(s).")
+            n -= jogada
+            jogador = 0
 
-    opcao = input("Opção: ")
-    while opcao not in ["1", "2"]:
-        opcao = input("Opção inválida. Escolha 1 ou 2: ")
+        if n == 0:
+            if jogador == 0:
+                print("Você ganhou!")
+            else:
+                print("O computador ganhou!")
 
-    if opcao == "1":
-        print("Você escolheu uma partida isolada!")
-        partida()
-    else:
-        print("Você escolheu um campeonato!")
-        # Implemente aqui a lógica para um campeonato
+def campeonato():
+    placar_usuario = 0
+    placar_computador = 0
+    for i in range(1, 4):
+        print("**** Rodada", i, "****")
+        vencedor = partida()
+        if vencedor == "Você":
+            placar_usuario += 1
+        elif vencedor == "O computador":
+            placar_computador += 1
+    print("Placar final: Você", placar_usuario, "X", placar_computador, "Computador")
 
+print("Bem-vindo ao jogo do NIM! Escolha uma opção:")
+print("1 - Jogar partida única")
+print("2 - Jogar campeonato")
 
-if __name__ == '__main__':
-    main()
+opcao = int(input())
+
+if opcao == 1:
+    print("Você escolheu jogar uma partida única!")
+    partida()
+elif opcao == 2:
+    print("Você escolheu jogar um campeonato!")
+    campeonato()
+else:
+    print("Opção inválida! Por favor, escolha 1 ou 2.")
