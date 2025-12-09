@@ -11,8 +11,8 @@ import random
 
 def maior_elemento(lista):
     return max(lista)
-
 lista = [random.randint(1, 100) for _ in range(10)]
 print(lista)
+
 
 print(f'O maior número é {maior_elemento(lista)}')
